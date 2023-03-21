@@ -15,6 +15,6 @@ export class User {
     @Column({ nullable: true })
     age: number;
 
-    @Column()
+    @Column({ nullable: false, default: 1 })
     enabled: boolean;
 }

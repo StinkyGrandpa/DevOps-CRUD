@@ -12,6 +12,7 @@ export class CreateUserDto {
     @IsNumber()
     age?: number;
 
+    @IsOptional()
     @IsBoolean()
     enabled: boolean;
 }
