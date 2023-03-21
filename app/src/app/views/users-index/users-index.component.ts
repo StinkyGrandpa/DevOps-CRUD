@@ -30,16 +30,22 @@ export class UserIndexView {
         this.$onUpdate.pipe(startWith(null))
     ]).pipe(
         map(([usersRequest, onUpdate]): UserIndexProps => {
-            let list: IUser[] = [];
+            let list: IUser[] = usersRequest.data ?? [];
 
-            if(usersRequest.data && onUpdate) {
-                list = usersRequest.data.map((user) => {
+            if(onUpdate) {
+                let wasUpdated = false;
+                list = list.map((user) => {
                     if(user.id === onUpdate.id) {
+                        wasUpdated = true;
                         return onUpdate;
                     }
 
                     return user;
                 });
+
+                if(!wasUpdated) {
+                    list.push(onUpdate);
+                }
             }
 
             return {
@@ -52,7 +58,9 @@ export class UserIndexView {
     public openCreateUserDialog() {
         const dialogRef = this.dialog.open(UserEditorDialog);
         dialogRef.afterClosed().subscribe((result: IUser) => {
-            this.$onUpdate.next(result);
+            if(typeof result === "object") {
+                this.$onUpdate.next(result);
+            }
         });
     }
 

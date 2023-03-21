@@ -1,6 +1,7 @@
 import { DialogRef } from "@angular/cdk/dialog";
 import { Component } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
+import { MatDialogRef } from "@angular/material/dialog";
 import { IUser } from "src/app/entities/user.entity";
 import { UserService } from "src/app/services/user.service";
 
@@ -13,7 +14,7 @@ export class UserEditorDialog {
     public readonly ageControl = new FormControl(null, [Validators.min(0)]);
 
     constructor(
-        private readonly dialogRef: DialogRef,
+        private readonly dialogRef: MatDialogRef<UserEditorDialog>,
         private readonly usersService: UserService
     ) {}
 
