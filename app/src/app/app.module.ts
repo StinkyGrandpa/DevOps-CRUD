@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserIndexView } from './views/users-index/users-index.component';
 import { UserEditorModule } from './dialogs/user-editor-dialog/user-editor-dialog.module';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { UserEditorModule } from './dialogs/user-editor-dialog/user-editor-dialo
 
     MatTableModule,
     MatButtonModule,
+    MatIconModule,
     BrowserAnimationsModule,
 
     UserEditorModule
