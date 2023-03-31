@@ -19,19 +19,22 @@ export class UserEditorDialog {
         private readonly usersService: UserService,
         @Inject(MAT_DIALOG_DATA) public data: IUser
     ) {
-        console.log(data)
         if (data) {
             this.firstNameControl.setValue(data.firstName);
             this.lastNameControl.setValue(data.lastName);
             this.ageControl.setValue(data.age as any)
         }
     }
-
-    public createUser() {
+    public submitForm() {
         if (this.data) {
             this.updateUser()
             return;
         }
+        this.createUser()
+    }
+
+    public createUser() {
+
 
         if (this.firstNameControl.invalid || this.lastNameControl.invalid || this.ageControl.invalid) return;
 
@@ -50,7 +53,17 @@ export class UserEditorDialog {
     }
 
     public updateUser() {
-        this.usersService.updateUser(this.data.id, {})
+        const data: Omit<IUser, "id" | "enabled"> = {
+            firstName: this.firstNameControl.value as string,
+            lastName: this.lastNameControl.value as string,
+            age: Number(this.ageControl.value)
+        }
+        this.usersService.updateUser(this.data.id, data).subscribe((request) => {
+            if (request.loading) return;
+            if (request.error) return;
+
+            this.dialogRef.close(request.data);
+        })
     }
 
 }

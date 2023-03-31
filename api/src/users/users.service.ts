@@ -26,7 +26,7 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-
+    console.log(updateUserDto, id)
     return await this.userRepository.update(id,
       {
         age: updateUserDto.age,
