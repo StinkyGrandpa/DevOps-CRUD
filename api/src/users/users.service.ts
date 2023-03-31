@@ -13,6 +13,8 @@ export class UsersService {
   ) { }
 
   create(createUserDto: CreateUserDto) {
+    if (createUserDto.age <= 0) createUserDto.age = null
+
     return this.userRepository.save(createUserDto)
 
   }

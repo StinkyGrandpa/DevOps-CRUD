@@ -1,35 +1,35 @@
 <h2 mat-dialog-title>Nutzer erstellen</h2>
 <mat-dialog-content class="mat-typography">
 
-    <form class="w-min">
-        <!-- First name -->
-        <mat-form-field class="w-96">
-          <mat-label>Vorname</mat-label>
-          <input type="text" matInput [formControl]="firstNameControl">
-          <mat-error *ngIf="firstNameControl.hasError('required')">
-            Vorname wird <strong>benötigt</strong>
-          </mat-error>
-        </mat-form-field>
+  <form class="w-min">
+    <!-- First name -->
+    <mat-form-field class="w-96">
+      <mat-label>Vorname</mat-label>
+      <input type="text" matInput [formControl]="firstNameControl">
+      <mat-error *ngIf="firstNameControl.hasError('required')">
+        Vorname wird <strong>benötigt</strong>
+      </mat-error>
+    </mat-form-field>
 
-        <!-- Last name -->
-        <mat-form-field class="w-96">
-            <mat-label>Nachname</mat-label>
-            <input type="text" matInput [formControl]="lastNameControl">
-            <mat-error *ngIf="lastNameControl.hasError('required')">
-              Nachname wird <strong>benötigt</strong>
-            </mat-error>
-        </mat-form-field>
+    <!-- Last name -->
+    <mat-form-field class="w-96">
+      <mat-label>Nachname</mat-label>
+      <input type="text" matInput [formControl]="lastNameControl">
+      <mat-error *ngIf="lastNameControl.hasError('required')">
+        Nachname wird <strong>benötigt</strong>
+      </mat-error>
+    </mat-form-field>
 
-        <!-- Last name -->
-        <mat-form-field class="w-96">
-            <mat-label>Alter</mat-label>
-            <input type="number" matInput [formControl]="ageControl">
-        </mat-form-field>
-    </form>
-  
+    <!-- Last name -->
+    <mat-form-field class="w-96">
+      <mat-label>Alter</mat-label>
+      <input type="number" matInput [formControl]="ageControl">
+    </mat-form-field>
+  </form>
+
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Abbrechen</button>
-  <button mat-button (click)="createUser()" cdkFocusInitial>Speichern</button>
+  <button mat-button (click)="submitForm()" cdkFocusInitial>Speichern</button>
 </mat-dialog-actions>
