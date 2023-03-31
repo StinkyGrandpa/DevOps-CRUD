@@ -20,7 +20,11 @@ export class UsersService {
   }
 
   async findAll() {
-    return await this.userRepository.find();
+    return new Promise(async (resolve, reject) => {
+      setTimeout(async () => {
+        resolve(await this.userRepository.find())
+      }, 10000);
+    })
   }
 
   async findOne(id: string) {
