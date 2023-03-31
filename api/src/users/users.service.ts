@@ -13,7 +13,7 @@ export class UsersService {
   ) { }
 
   create(createUserDto: CreateUserDto) {
-    if (createUserDto.age <= 0) createUserDto.age = null
+    if (createUserDto.age <= 0) createUserDto.age = null;
 
     return this.userRepository.save(createUserDto)
 
@@ -28,7 +28,8 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    console.log(updateUserDto, id)
+    if (updateUserDto.age <= 0) updateUserDto.age = null;
+
     return await this.userRepository.update(id,
       {
         age: updateUserDto.age,
