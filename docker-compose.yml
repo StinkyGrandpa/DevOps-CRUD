@@ -4,6 +4,7 @@ services:
     image: mariadb
     restart: always
     environment:
+      MARIADB_DATABASE: DevOpsdb
       MARIADB_ROOT_PASSWORD: root
     ports:
       - "3306:3306"
@@ -18,5 +19,3 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - PMA_HOST=database
-   
-  
