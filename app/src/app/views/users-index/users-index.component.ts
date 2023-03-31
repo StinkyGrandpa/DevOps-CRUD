@@ -17,11 +17,11 @@ interface UserIndexProps {
 export class UserIndexView {
 
     public displayedColumns: string[] = ['firstName', 'lastName', 'age', 'actions'];
-    
+
     constructor(
         private readonly usersService: UserService,
         private readonly dialog: MatDialog
-    ) {}
+    ) { }
 
     private readonly $onReload: Subject<void> = new Subject();
 
@@ -46,7 +46,7 @@ export class UserIndexView {
     public openCreateUserDialog() {
         const dialogRef = this.dialog.open(UserEditorDialog);
         dialogRef.afterClosed().subscribe((result: IUser) => {
-            if(typeof result === "object") {
+            if (typeof result === "object") {
                 this.$onReload.next();
             }
         });
@@ -54,14 +54,34 @@ export class UserIndexView {
 
     public deleteUser(id: string) {
         this.usersService.deleteById(id).subscribe((request) => {
-            if(request.loading) return;
-            if(request.error) return;
+            if (request.loading) return;
+            if (request.error) return;
 
-            if(request.data) {
+            if (request.data) {
                 // Remove user from list on success
                 this.$onReload.next();
             }
         })
     }
 
+    public lock(user: IUser) {
+        user.enabled = false
+        this.usersService.lockById(user.id).subscribe()
+    }
+
+    public unlock(user: IUser) {
+        user.enabled = true
+        this.usersService.unlockById(user.id).subscribe()
+    }
+
+    public edit(user: IUser) {
+        const dialogRef = this.dialog.open(UserEditorDialog, { data: user });
+        dialogRef.afterClosed().subscribe((result: IUser) => {
+            if (typeof result === "object") {
+                this.$onReload.next();
+            }
+        });
+
+
+    }
 }

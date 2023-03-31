@@ -47,4 +47,12 @@ export class UsersService {
   async remove(id: string) {
     return (await this.userRepository.delete(id)).affected > 0 ? true : false;
   }
+
+  async lock(id: string) {
+    return (await this.userRepository.update(id, { enabled: false })).affected > 0 ? true : false
+  }
+
+  async unlock(id: string) {
+    return (await this.userRepository.update(id, { enabled: true })).affected > 0 ? true : false
+  }
 }

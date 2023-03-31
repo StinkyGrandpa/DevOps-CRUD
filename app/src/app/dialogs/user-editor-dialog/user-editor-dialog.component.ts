@@ -1,7 +1,7 @@
 import { DialogRef } from "@angular/cdk/dialog";
-import { Component } from "@angular/core";
+import { Component, Inject } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
-import { MatDialogRef } from "@angular/material/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { IUser } from "src/app/entities/user.entity";
 import { UserService } from "src/app/services/user.service";
 
@@ -9,17 +9,31 @@ import { UserService } from "src/app/services/user.service";
     templateUrl: "./user-editor-dialog.component.html"
 })
 export class UserEditorDialog {
+
     public readonly firstNameControl = new FormControl('', [Validators.required, Validators.minLength(0), Validators.maxLength(254)]);
     public readonly lastNameControl = new FormControl('', [Validators.required, Validators.minLength(0), Validators.maxLength(254)]);
     public readonly ageControl = new FormControl(null, [Validators.min(0)]);
 
     constructor(
         private readonly dialogRef: MatDialogRef<UserEditorDialog>,
-        private readonly usersService: UserService
-    ) {}
+        private readonly usersService: UserService,
+        @Inject(MAT_DIALOG_DATA) public data: IUser
+    ) {
+        console.log(data)
+        if (data) {
+            this.firstNameControl.setValue(data.firstName);
+            this.lastNameControl.setValue(data.lastName);
+            this.ageControl.setValue(data.age as any)
+        }
+    }
 
     public createUser() {
-        if(this.firstNameControl.invalid || this.lastNameControl.invalid || this.ageControl.invalid) return;
+        if (this.data) {
+            this.updateUser()
+            return;
+        }
+
+        if (this.firstNameControl.invalid || this.lastNameControl.invalid || this.ageControl.invalid) return;
 
         const data: Omit<IUser, "id" | "enabled"> = {
             firstName: this.firstNameControl.value as string,
@@ -28,11 +42,15 @@ export class UserEditorDialog {
         }
 
         this.usersService.createUser(data).subscribe((request) => {
-            if(request.loading) return;
-            if(request.error) return;
+            if (request.loading) return;
+            if (request.error) return;
 
             this.dialogRef.close(request.data);
         });
+    }
+
+    public updateUser() {
+        this.usersService.updateUser(this.data.id, {})
     }
 
 }

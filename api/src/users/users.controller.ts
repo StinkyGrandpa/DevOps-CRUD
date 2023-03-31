@@ -25,8 +25,16 @@ export class UsersController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    console.log(updateUserDto)
     return this.usersService.update(id, updateUserDto);
+  }
+  @Put(':id/lock')
+  lock(@Param('id') id: string) {
+    return this.usersService.lock(id);
+  }
+
+  @Put(':id/unlock')
+  unlock(@Param('id') id: string) {
+    return this.usersService.unlock(id);
   }
 
   @Delete(':id')

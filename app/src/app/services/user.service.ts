@@ -10,7 +10,7 @@ export class UserService {
 
     constructor(
         private readonly httpClient: HttpClient
-    ) {}
+    ) { }
 
     public findById(id: string): Observable<Future<IUser>> {
         return this.httpClient.get<IUser>(`${environment.api_base_url}/users/${id}`).pipe(toFuture());
@@ -31,5 +31,14 @@ export class UserService {
     public findAll(): Observable<Future<IUser[]>> {
         return this.httpClient.get<IUser[]>(`${environment.api_base_url}/users`).pipe(toFuture());
     }
+
+    public lockById(id: string) {
+        return this.httpClient.put(`${environment.api_base_url}/users/${id}/lock`, {}).pipe(toFuture());
+    }
+
+    public unlockById(id: string) {
+        return this.httpClient.put(`${environment.api_base_url}/users/${id}/unlock`, {}).pipe(toFuture());
+    }
+
 
 }

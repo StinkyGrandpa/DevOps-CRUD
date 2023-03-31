@@ -1,7 +1,7 @@
 
 export interface IUser {
     readonly id: string;
-    readonly enabled: boolean;
+    enabled: boolean;
     firstName: string;
     lastName: string;
     age?: number;
