@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { combineLatest, map, Observable, startWith, Subject, switchMap } from "rxjs";
+import { combineLatest, map, Observable, startWith, Subject, switchMap, tap } from "rxjs";
 import { UserEditorDialog } from "src/app/dialogs/user-editor-dialog/user-editor-dialog.component";
 import { IUser } from "src/app/entities/user.entity";
 import { UserService } from "src/app/services/user.service";
@@ -27,7 +27,9 @@ export class UserIndexView {
 
     public $props: Observable<UserIndexProps> = combineLatest([
         this.$onReload.pipe(
+            //startwert
             startWith(null),
+            //für die nächte pipe
             switchMap(() => {
                 return this.usersService.findAll();
             })

@@ -4,6 +4,10 @@
       <h2 class="flex items-center text-2xl font-medium flex-grow">Benutzerliste</h2>
       <button mat-stroked-button (click)="openCreateUserDialog()">Nutzer erstellen</button>
     </div>
+    <div *ngIf="props.loading" class="fixed top-1/2 left-1/2 z-20 b">
+      <app-loader></app-loader>
+
+    </div>
 
     <table mat-table [dataSource]="props.users ?? []">
 
@@ -50,6 +54,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <h1 *ngIf="!props.users?.length">Keine EInträge gefunden! Backend Online?</h1>
 
   </div>
 </ng-container>
