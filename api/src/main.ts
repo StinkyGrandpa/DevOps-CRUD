@@ -4,13 +4,15 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    cors: true
+    cors: true,
   });
 
-  app.useGlobalPipes(new ValidationPipe({
-    //disableErrorMessages: true,
-    transform: true,
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      //disableErrorMessages: true,
+      transform: true,
+    }),
+  );
 
   await app.listen(3000);
 }

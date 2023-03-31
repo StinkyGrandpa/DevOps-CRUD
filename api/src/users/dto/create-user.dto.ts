@@ -1,18 +1,17 @@
-import { IsString, IsBoolean, IsNumber, IsOptional } from "class-validator";
+import { IsString, IsBoolean, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateUserDto {
+  @IsString()
+  firstName: string;
 
-    @IsString()
-    firstName: string;
+  @IsString()
+  lastName: string;
 
-    @IsString()
-    lastName: string;
+  @IsOptional()
+  @IsNumber()
+  age?: number;
 
-    @IsOptional()
-    @IsNumber()
-    age?: number;
-
-    @IsOptional()
-    @IsBoolean()
-    enabled: boolean;
+  @IsOptional()
+  @IsBoolean()
+  enabled: boolean;
 }
