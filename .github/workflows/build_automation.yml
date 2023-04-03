@@ -114,7 +114,7 @@ jobs:
           tags: api-test
       - name: Test
         run: |
-          docker run --rm ${{ env.TEST_TAG }}
+          docker run --rm api-test
           docker ls -a
         
       - name: Build and push
@@ -124,6 +124,7 @@ jobs:
           push: true
           tags: 
             ${{ secrets.DOCKERHUB_USERNAME }}/devops-api:${{ needs.check_branch.outputs.tag }},${{ secrets.DOCKERHUB_USERNAME }}/devops-api:${{ needs.check_branch.outputs.tag }}-${{ needs.check_version_api.outputs.version }}
+  
   build-app:
     needs: 
       - check_version_app
