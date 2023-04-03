@@ -22,19 +22,19 @@ import { UsersModule } from './users/users.module';
           type: 'mariadb',
           database: config.get("DB_NAME"),
           //only for Debug or it will completly wrap the Database on each change
-          synchronize: true, 
+          synchronize: true,
           host: config.get("DB_HOST"),
           port: config.get("DB_PORT"),
           username: config.get("DB_USER"),
           password: config.get("DB_PASS"),
-          logging: config.get("DB_LOG_SQL"),
+          logging: config.get("DB_LOG_SQL") == 'true',
           autoLoadEntities: true,
         }
       }
-    }), 
+    }),
     UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
