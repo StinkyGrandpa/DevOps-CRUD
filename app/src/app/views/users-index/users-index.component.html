@@ -2,7 +2,11 @@
   <div class="w-full h-full px-6 pt-6">
     <div class="flex items-center justify-start">
       <h2 class="flex items-center text-2xl font-medium flex-grow">Benutzerliste</h2>
-      <button mat-stroked-button (click)="openCreateUserDialog()">Nutzer erstellen</button>
+      <div>
+        <button mat-stroked-button (click)="openCreateUserDialog()">Nutzer erstellen</button>
+        <button mat-stroked-button (click)="openDocs()">Dokumentation</button>
+      </div>
+
     </div>
     <div *ngIf="props.loading" class="fixed top-1/2 left-1/2 z-20 b">
       <app-loader></app-loader>

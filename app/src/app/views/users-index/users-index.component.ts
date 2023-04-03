@@ -86,4 +86,7 @@ export class UserIndexView {
 
 
     }
+    openDocs() {
+        window.open('./api/')
+    }
 }
