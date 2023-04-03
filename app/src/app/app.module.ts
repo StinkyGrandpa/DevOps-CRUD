@@ -8,7 +8,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { UserIndexView } from './views/users-index/users-index.component';
+import { UserIndexViewComponent } from './views/users-index/users-index.component';
 import { UserEditorModule } from './dialogs/user-editor-dialog/user-editor-dialog.module';
 import {MatIconModule} from '@angular/material/icon';
 import { LoaderComponent } from './views/loader/loader.component';
@@ -16,7 +16,7 @@ import { LoaderComponent } from './views/loader/loader.component';
 @NgModule({
   declarations: [
     AppComponent,
-    UserIndexView,
+    UserIndexViewComponent,
     LoaderComponent
   ],
   imports: [

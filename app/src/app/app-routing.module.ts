@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserIndexView } from './views/users-index/users-index.component';
+import { UserIndexViewComponent } from './views/users-index/users-index.component';
 
 const routes: Routes = [
-  { path: "", component: UserIndexView },
+  { path: "", component: UserIndexViewComponent },
   { path: "**", redirectTo: "/", pathMatch: "full" }
 ];
 

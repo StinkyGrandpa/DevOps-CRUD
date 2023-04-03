@@ -2,7 +2,7 @@
   <div class="w-full h-full px-6 pt-6">
     <div class="flex items-center justify-start">
       <h2 class="flex items-center text-2xl font-medium flex-grow">Benutzerliste</h2>
-      <div>
+      <div class="inline-flex items-center justify-end gap-2">
         <button mat-stroked-button (click)="openCreateUserDialog()">Nutzer erstellen</button>
         <button mat-stroked-button (click)="openDocs()">Dokumentation</button>
       </div>
@@ -10,14 +10,9 @@
     </div>
     <div *ngIf="props.loading" class="fixed top-1/2 left-1/2 z-20 b">
       <app-loader></app-loader>
-
     </div>
 
     <table mat-table [dataSource]="props.users ?? []">
-
-      <!--- Note that these columns can be defined in any order.
-                  The actual rendered columns are set as a property on the row definition" -->
-
       <!-- Name Column -->
       <ng-container matColumnDef="firstName">
         <th mat-header-cell *matHeaderCellDef>Vorname</th>
@@ -40,18 +35,21 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
-          <button mat-icon-button color="warn" (click)="deleteUser(element.id)">
-            <mat-icon>delete</mat-icon>
+          <!-- Edit button -->
+          <button mat-icon-button (click)="edit(element)">
+            <mat-icon>edit</mat-icon>
           </button>
+          <!-- Lock/Unlock button -->
           <button *ngIf="element.enabled" mat-icon-button (click)="lock(element)">
             <mat-icon>lock</mat-icon>
           </button>
           <button *ngIf="!element.enabled" mat-icon-button (click)="unlock(element)">
             <mat-icon>lock_open</mat-icon>
           </button>
-          <button mat-icon-button (click)="edit(element)">
-            <mat-icon>edit</mat-icon>
-          </button>
+          <!-- Delete button -->
+          <button mat-icon-button color="warn" (click)="deleteUser(element.id)">
+            <mat-icon>delete</mat-icon>
+          </button>          
         </td>
       </ng-container>
 

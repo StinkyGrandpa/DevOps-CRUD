@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { UserEditorDialog } from "./user-editor-dialog.component";
+import { UserEditorDialogComponent } from "./user-editor-dialog.component";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import { CommonModule } from "@angular/common";
@@ -8,7 +8,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
     declarations: [
-        UserEditorDialog
+        UserEditorDialogComponent
     ],
     imports: [
         CommonModule,
@@ -18,7 +18,7 @@ import { ReactiveFormsModule } from "@angular/forms";
         MatInputModule
     ],
     exports: [
-        UserEditorDialog
+        UserEditorDialogComponent
     ]
 })
 export class UserEditorModule {}
