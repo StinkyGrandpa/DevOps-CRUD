@@ -2,9 +2,9 @@ name: Userdatabase Production Build
       
 on:
   workflow_dispatch:
-  #push:
-  #  branches:
-  #    - main
+  push:
+    branches:
+      - main
 jobs:          
   check_branch:
     runs-on: ubuntu-latest
