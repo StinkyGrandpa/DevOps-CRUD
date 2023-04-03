@@ -12,7 +12,6 @@ async function bootstrap() {
     .setTitle('REST-Documentation')
     .setDescription('Nutzerdatenabnk für das Modul DevOps')
     .setVersion('1.0')
-    .addTag('devops')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/', app, document);
