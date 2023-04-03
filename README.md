@@ -1,4 +1,7 @@
 # DevOps: Nutzerdatenbank
+
+[![Userdatabase Production Build](https://github.com/StinkyGrandpa/DevOps-CRUD/actions/workflows/build_automation.yml/badge.svg)](https://github.com/StinkyGrandpa/DevOps-CRUD/actions/workflows/build_automation.yml)
+
 This project contains an example application to demonstrate DevOps methodoligies.
 We have constructed a build pipeline that automatically tests and builds the applications when
 new code is pushed to the repository.
