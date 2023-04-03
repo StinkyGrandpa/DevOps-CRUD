@@ -109,7 +109,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          file: api/Dockerfile
+          context: ./api
           push: true
           tags: 
             ${{ secrets.DOCKERHUB_USERNAME }}/devops-api:${{ needs.check_branch.outputs.tag }},${{ secrets.DOCKERHUB_USERNAME }}/devops-api:${{ needs.check_branch.outputs.tag }}-${{ needs.check_version_api.outputs.version }}
@@ -139,7 +139,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          file: api/Dockerfile
+          context: ./app
           push: true
           tags: 
             ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:${{ needs.check_branch.outputs.tag }},${{ secrets.DOCKERHUB_USERNAME }}/devops-app:${{ needs.check_branch.outputs.tag }}-${{ needs.check_version_app.outputs.version }}
