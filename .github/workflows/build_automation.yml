@@ -29,10 +29,55 @@ jobs:
               echo "tag=preview" >> "$GITHUB_OUTPUT"
           fi
           
-  test:
+  lint-api:
+    runs-on: ubuntu-latest
+    needs:
+      - check_branch     
+    steps:
+      # Checkout git repository (clone) with branch from
+      # previous stage
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.check_branch.outputs.branch }}
+      # Install deps from package.json
+      - name: Install dependencies
+        run: |
+          cd ./api
+          npm install
+      # Execute lint
+      - name: Lint
+        run: |
+          cd ./api
+          npm run lint
+
+  lint-app:
+    runs-on: ubuntu-latest
+    needs:
+      - check_branch     
+    steps:
+      # Checkout git repository (clone) with branch from
+      # previous stage
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.check_branch.outputs.branch }}
+      # Install deps from package.json
+      - name: Install dependencies
+        run: |
+          cd ./app
+          npm install
+      # Execute lint
+      - name: Lint
+        run: |
+          cd ./app
+          npm run lint
+  
+  test-api:
     runs-on: ubuntu-latest
     needs:
       - check_branch
+      - lint-api
     steps:
       # Checkout git repository (clone) with branch from
       # previous stage
@@ -45,13 +90,31 @@ jobs:
           cd ./api
           npm install
           npm run test
+
+  test-app:
+    runs-on: ubuntu-latest
+    needs:
+      - check_branch
+      - lint-app
+    steps:
+      # Checkout git repository (clone) with branch from
+      # previous stage
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.check_branch.outputs.branch }}
+      - name: Test APP
+        run: |
+          cd ./api
+          npm install
+          npm run test
           
   # Stage that reads the version from the api package.json       
   check_version_api:
     runs-on: ubuntu-latest
     needs:
       - check_branch
-      - test
+      - test-api
     outputs:
       version: ${{ steps.outputVersion.outputs.version }}
     steps:
@@ -78,7 +141,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - check_branch
-      - test
+      - test-app
     outputs:
       version: ${{ steps.outputVersion.outputs.version }}
     steps:

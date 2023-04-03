@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { combineLatest, map, Observable, startWith, Subject, switchMap, tap } from "rxjs";
-import { UserEditorDialog } from "src/app/dialogs/user-editor-dialog/user-editor-dialog.component";
+import { combineLatest, map, Observable, startWith, Subject, switchMap } from "rxjs";
+import { UserEditorDialogComponent } from "src/app/dialogs/user-editor-dialog/user-editor-dialog.component";
 import { IUser } from "src/app/entities/user.entity";
 import { UserService } from "src/app/services/user.service";
 
@@ -14,7 +14,7 @@ interface UserIndexProps {
     templateUrl: "./users-index.component.html",
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserIndexView {
+export class UserIndexViewComponent {
 
     public displayedColumns: string[] = ['firstName', 'lastName', 'age', 'actions'];
 
@@ -36,7 +36,7 @@ export class UserIndexView {
         )
     ]).pipe(
         map(([usersRequest]): UserIndexProps => {
-            let list: IUser[] = usersRequest.data ?? [];
+            const list: IUser[] = usersRequest.data ?? [];
 
             return {
                 loading: usersRequest.loading,
@@ -46,7 +46,7 @@ export class UserIndexView {
     );
 
     public openCreateUserDialog() {
-        const dialogRef = this.dialog.open(UserEditorDialog);
+        const dialogRef = this.dialog.open(UserEditorDialogComponent);
         dialogRef.afterClosed().subscribe((result: IUser) => {
             if (typeof result === "object") {
                 this.$onReload.next();
@@ -77,7 +77,7 @@ export class UserIndexView {
     }
 
     public edit(user: IUser) {
-        const dialogRef = this.dialog.open(UserEditorDialog, { data: user });
+        const dialogRef = this.dialog.open(UserEditorDialogComponent, { data: user });
         dialogRef.afterClosed().subscribe((result: IUser) => {
             if (typeof result === "object") {
                 this.$onReload.next();

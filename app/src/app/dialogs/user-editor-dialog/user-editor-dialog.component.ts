@@ -1,4 +1,3 @@
-import { DialogRef } from "@angular/cdk/dialog";
 import { Component, Inject } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
@@ -8,21 +7,21 @@ import { UserService } from "src/app/services/user.service";
 @Component({
     templateUrl: "./user-editor-dialog.component.html"
 })
-export class UserEditorDialog {
+export class UserEditorDialogComponent {
 
     public readonly firstNameControl = new FormControl('', [Validators.required, Validators.minLength(0), Validators.maxLength(254)]);
     public readonly lastNameControl = new FormControl('', [Validators.required, Validators.minLength(0), Validators.maxLength(254)]);
-    public readonly ageControl = new FormControl(null, [Validators.min(0)]);
+    public readonly ageControl = new FormControl<number | null>(null, [Validators.min(0)]);
 
     constructor(
-        private readonly dialogRef: MatDialogRef<UserEditorDialog>,
+        private readonly dialogRef: MatDialogRef<UserEditorDialogComponent>,
         private readonly usersService: UserService,
         @Inject(MAT_DIALOG_DATA) public data: IUser
     ) {
         if (data) {
             this.firstNameControl.setValue(data.firstName);
             this.lastNameControl.setValue(data.lastName);
-            this.ageControl.setValue(data.age as any)
+            this.ageControl.setValue(data.age as number);
         }
     }
     public submitForm() {
