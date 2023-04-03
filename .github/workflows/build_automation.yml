@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-jobs:          
+jobs:  
   check_branch:
     runs-on: ubuntu-latest
     outputs: 
@@ -29,11 +29,29 @@ jobs:
               echo "tag=preview" >> "$GITHUB_OUTPUT"
           fi
           
+  test:
+    runs-on: ubuntu-latest
+    needs:
+      - check_branch
+    steps:
+      # Checkout git repository (clone) with branch from
+      # previous stage
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.check_branch.outputs.branch }}
+      - name: Test API
+        run: |
+          cd ./api
+          npm install
+          npm run test
+          
   # Stage that reads the version from the api package.json       
   check_version_api:
     runs-on: ubuntu-latest
     needs:
       - check_branch
+      - test
     outputs:
       version: ${{ steps.outputVersion.outputs.version }}
     steps:
@@ -60,6 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - check_branch
+      - test
     outputs:
       version: ${{ steps.outputVersion.outputs.version }}
     steps:
@@ -113,6 +132,7 @@ jobs:
           push: true
           tags: 
             ${{ secrets.DOCKERHUB_USERNAME }}/devops-api:${{ needs.check_branch.outputs.tag }},${{ secrets.DOCKERHUB_USERNAME }}/devops-api:${{ needs.check_branch.outputs.tag }}-${{ needs.check_version_api.outputs.version }}
+  
   build-app:
     needs: 
       - check_version_app
