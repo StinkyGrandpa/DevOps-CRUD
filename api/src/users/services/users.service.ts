@@ -23,7 +23,7 @@ export class UsersService {
     return new Promise(async (resolve, reject) => {
       setTimeout(async () => {
         resolve(await this.userRepository.find())
-      }, 10000);
+      }, 250);
     })
   }
 
