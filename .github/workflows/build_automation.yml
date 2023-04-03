@@ -105,6 +105,17 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Build and export to Docker
+        uses: docker/build-push-action@v4
+        with:
+          context: ./api
+          load: true
+          tags: api-test
+      - name: Test
+        run: |
+          docker run --rm ${{ env.TEST_TAG }}
+          docker ls -a
         
       - name: Build and push
         uses: docker/build-push-action@v3
