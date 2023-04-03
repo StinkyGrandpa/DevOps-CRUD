@@ -109,6 +109,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
+          file: api/Dockerfile
           push: true
           tags: 
             ${{ secrets.DOCKERHUB_USERNAME }}/devops-api:${{ needs.check_branch.outputs.tag }},${{ secrets.DOCKERHUB_USERNAME }}/devops-api:${{ needs.check_branch.outputs.tag }}-${{ needs.check_version_api.outputs.version }}
@@ -118,7 +119,6 @@ jobs:
       - check_branch
     runs-on: ubuntu-latest
     steps:
-      
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -139,6 +139,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
+          file: api/Dockerfile
           push: true
           tags: 
             ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:${{ needs.check_branch.outputs.tag }},${{ secrets.DOCKERHUB_USERNAME }}/devops-app:${{ needs.check_branch.outputs.tag }}-${{ needs.check_version_app.outputs.version }}
