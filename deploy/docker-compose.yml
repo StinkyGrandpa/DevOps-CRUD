@@ -1,5 +1,6 @@
 version: '3.9'
 
+name: devops-prod
 services:
   # Deploy MariaDB as database for API
   database:
@@ -25,6 +26,7 @@ services:
   api:
     image: zettee/devops-api:latest
     restart: unless-stopped
+    pull_policy: always
     depends_on:
       - database
     environment:
@@ -38,6 +40,7 @@ services:
   app:
     image: zettee/devops-app:latest
     restart: unless-stopped
+    pull_policy: always
     depends_on:
       - api
     ports:
