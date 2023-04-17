@@ -1,6 +1,4 @@
-version: '3.9'
-
-name: devops-prod
+version: '3.3'
 services:
   # Deploy MariaDB as database for API
   database:
