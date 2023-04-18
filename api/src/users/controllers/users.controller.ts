@@ -4,11 +4,13 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { Header, Headers, Put, Req, UseGuards } from '@nestjs/common/decorators';
 import { ApiBody } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService,
+  ) { }
 
   @ApiBody({ type: CreateUserDto, description: 'Erstelle einen neuen Nutzer' })
   @Post()
@@ -20,8 +22,7 @@ export class UsersController {
   @ApiBody({ description: 'Gib alle Nutzer zurück' })
   @Get()
   @UseGuards(JwtAuthGuard)
-  findAll(@Headers() re: any) {
-    console.log(re)
+  findAll(@Headers('authorization') re: string) {
     return this.usersService.findAll();
   }
 

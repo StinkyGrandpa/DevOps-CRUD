@@ -4,6 +4,9 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/users/services/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { User } from 'src/users/entities/user.entity';
+import { use } from 'passport';
+
 
 
 @Injectable()
@@ -15,6 +18,7 @@ export class AuthService {
   ) { }
 
   async login(createAuthDto: CreateAuthDto) {
+
     const user = await this.userService.findOneByUsername(createAuthDto.username);
     if (!user) throw new UnauthorizedException('Daten passen nicht!');
 
@@ -25,8 +29,8 @@ export class AuthService {
     // TODO: Generate a JWT and return it here
     // instead of the user object
     return this.jwtService.sign(payload
-      //, { secret: 'SuperGeheim', expiresIn: '60m' }
-    );
+      , { secret: 'SuperGeheim', expiresIn: '1h' });
+
   }
 
   validate() {
@@ -35,5 +39,10 @@ export class AuthService {
 
   isUserEnable(state: boolean) {
     if (!state) throw new UnauthorizedException('Nutzer gesperrt')
+  }
+
+  async hasUserDataChanged(user: User) {
+    const userdb = await this.userService.findOneByUsername(user.username);
+
   }
 }
