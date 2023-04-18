@@ -1,16 +1,35 @@
 <div class="flex flex-col items-center justify-center w-full h-full p-4">
-    <div class="w-full rounded-lg shadow-lg border-2 border-gray-300 bg-gray-100 p-6 sm:w-96">
+    <div class="w-full rounded-lg shadow-lg border-2 border-gray-300 bg-gray-100 p-6 sm:w-[35rem]">
         <p class="text-2xl font-semibold text-center">Willkommen!</p>
         <p class="text-center">Bitte melde dich an, um fortzufahren</p>
 
         <div class="pt-4">
-            <form>
-                
+            <form [formGroup]="loginForm" (ngSubmit)="submitForm()"
+                class="p-2  shadow-md rounded px-8 pt-6 pb-8 mb-4   bg-[#f9fafb] ">
+
+                <div class="mb-4 standardInput">
+                    <label class="">
+                        Nutzername *
+                    </label>
+                    <input type="text" formControlName="username" class="" />
+
+                </div>
+
+                <div class="mb-6 standardInput">
+                    <label class="">
+                        Passwort *
+                    </label>
+
+                    <input type="password" formControlName="password" class="" />
+                </div>
+
+                <button type="submit" class="">
+                    Einloggen
+                </button>
             </form>
         </div>
-    </div>
 
-    <div class="pt-4">
-        <p class="text-sm hover:underline cursor-pointer" [routerLink]="['/auth', 'reset']">Passwort vergessen?</p>
+        <div class="pt-4">
+            <p class="text-sm hover:underline cursor-pointer" [routerLink]="['/auth', 'reset']">Passwort vergessen?</p>
+        </div>
     </div>
-</div>

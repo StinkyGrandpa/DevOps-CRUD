@@ -12,6 +12,11 @@ export class UserService {
         private readonly httpClient: HttpClient
     ) { }
 
+    // login(userData: any) {
+    //     return this.httpClient.post<User>(`${environment.api_base_url}/auth/login`, userData).pipe(toFuture());
+
+    // }
+
     public findById(id: string): Observable<Future<User>> {
         return this.httpClient.get<User>(`${environment.api_base_url}/users/${id}`).pipe(toFuture());
     }

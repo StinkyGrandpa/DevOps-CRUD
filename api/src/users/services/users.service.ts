@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -8,12 +8,27 @@ import * as bcrypt from 'bcrypt';
 
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnApplicationBootstrap {
 
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>
   ) { }
+  async onApplicationBootstrap() {
+    await this.initDb()
+  }
+  async initDb() {
+    const admin = await this.findOneByUsername('root')
+    console.log(admin)
+    if (admin) return
 
+    this.create({
+      enabled: true,
+      firstName: 'root',
+      lastName: 'root',
+      password: 'root',
+      username: 'root'
+    })
+  }
   create(createUserDto: CreateUserDto) {
     if (createUserDto.age <= 0) createUserDto.age = null;
     createUserDto.password = bcrypt.hashSync(createUserDto.password, 12)
