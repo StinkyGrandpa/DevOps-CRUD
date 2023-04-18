@@ -1,7 +1,7 @@
 import { Component, Inject } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { IUser } from "src/app/entities/user.entity";
+import { User } from "src/app/modules/authentication/entities/user.entity";
 import { UserService } from "src/app/services/user.service";
 
 @Component({
@@ -16,7 +16,7 @@ export class UserEditorDialogComponent {
     constructor(
         private readonly dialogRef: MatDialogRef<UserEditorDialogComponent>,
         private readonly usersService: UserService,
-        @Inject(MAT_DIALOG_DATA) public data: IUser
+        @Inject(MAT_DIALOG_DATA) public data: User
     ) {
         if (data) {
             this.firstNameControl.setValue(data.firstName);
@@ -37,7 +37,7 @@ export class UserEditorDialogComponent {
 
         if (this.firstNameControl.invalid || this.lastNameControl.invalid || this.ageControl.invalid) return;
 
-        const data: Omit<IUser, "id" | "enabled"> = {
+        const data: Omit<User, "id" | "enabled"> = {
             firstName: this.firstNameControl.value as string,
             lastName: this.lastNameControl.value as string,
             age: Number(this.ageControl.value)
@@ -52,7 +52,7 @@ export class UserEditorDialogComponent {
     }
 
     public updateUser() {
-        const data: Omit<IUser, "id" | "enabled"> = {
+        const data: Omit<User, "id" | "enabled"> = {
             firstName: this.firstNameControl.value as string,
             lastName: this.lastNameControl.value as string,
             age: Number(this.ageControl.value)

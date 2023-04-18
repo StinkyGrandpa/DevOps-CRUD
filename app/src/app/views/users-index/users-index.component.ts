@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { combineLatest, map, Observable, startWith, Subject, switchMap } from "rxjs";
 import { UserEditorDialogComponent } from "src/app/dialogs/user-editor-dialog/user-editor-dialog.component";
-import { IUser } from "src/app/entities/user.entity";
+import { User } from "src/app/modules/authentication/entities/user.entity";
 import { UserService } from "src/app/services/user.service";
 
 interface UserIndexProps {
     loading?: boolean;
-    users?: IUser[];
+    users?: User[];
 }
 
 @Component({
@@ -36,7 +36,7 @@ export class UserIndexViewComponent {
         )
     ]).pipe(
         map(([usersRequest]): UserIndexProps => {
-            const list: IUser[] = usersRequest.data ?? [];
+            const list: User[] = usersRequest.data ?? [];
 
             return {
                 loading: usersRequest.loading,
@@ -47,7 +47,7 @@ export class UserIndexViewComponent {
 
     public openCreateUserDialog() {
         const dialogRef = this.dialog.open(UserEditorDialogComponent);
-        dialogRef.afterClosed().subscribe((result: IUser) => {
+        dialogRef.afterClosed().subscribe((result: User) => {
             if (typeof result === "object") {
                 this.$onReload.next();
             }
@@ -66,19 +66,19 @@ export class UserIndexViewComponent {
         })
     }
 
-    public lock(user: IUser) {
+    public lock(user: User) {
         user.enabled = false
         this.usersService.lockById(user.id).subscribe()
     }
 
-    public unlock(user: IUser) {
+    public unlock(user: User) {
         user.enabled = true
         this.usersService.unlockById(user.id).subscribe()
     }
 
-    public edit(user: IUser) {
+    public edit(user: User) {
         const dialogRef = this.dialog.open(UserEditorDialogComponent, { data: user });
-        dialogRef.afterClosed().subscribe((result: IUser) => {
+        dialogRef.afterClosed().subscribe((result: User) => {
             if (typeof result === "object") {
                 this.$onReload.next();
             }
