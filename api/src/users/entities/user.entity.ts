@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -16,4 +16,13 @@ export class User {
 
   @Column({ nullable: false, default: 1 })
   enabled: boolean;
+
+  @Column({ nullable: false })
+  username: string;
+
+  @Column({ nullable: false })
+  password: string;
+
+  @UpdateDateColumn()
+  updatedAt: Date
 }

@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { User } from '../entities/user.entity';
+import * as bcrypt from 'bcrypt';
+
 
 @Injectable()
 export class UsersService {
@@ -14,34 +16,37 @@ export class UsersService {
 
   create(createUserDto: CreateUserDto) {
     if (createUserDto.age <= 0) createUserDto.age = null;
+    createUserDto.password = bcrypt.hashSync(createUserDto.password, 12)
 
-    return this.userRepository.save(createUserDto)
-
+    this.userRepository.save(createUserDto)
+    return true
   }
 
   async findAll() {
-    return new Promise(async (resolve, reject) => {
-      setTimeout(async () => {
-        resolve(await this.userRepository.find())
-      }, 250);
-    })
+    return await this.userRepository.find()
   }
 
   async findOne(id: string) {
     return await this.userRepository.findOne({ where: { id: id } });
   }
 
+  async findOneByUsername(username: string) {
+    return await this.userRepository.findOne({ where: { username: username } });
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     if (updateUserDto.age <= 0) updateUserDto.age = null;
 
-    return await this.userRepository.update(id,
+    return (await this.userRepository.update(id,
       {
         age: updateUserDto.age,
         firstName: updateUserDto.firstName,
         lastName: updateUserDto.lastName,
-        enabled: updateUserDto.enabled
+        enabled: updateUserDto.enabled,
+        password: bcrypt.hashSync(updateUserDto.password, 12),
+        username: updateUserDto.username,
       }
-    )
+    )).affected > 0 ? true : false
     /*
     return this.userRepository.createQueryBuilder()
       .update()
