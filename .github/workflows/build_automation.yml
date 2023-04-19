@@ -105,7 +105,7 @@ jobs:
           ref: ${{ needs.check_branch.outputs.branch }}
       - name: Test APP
         run: |
-          cd ./api
+          cd ./app
           npm install
           npm run test
           
