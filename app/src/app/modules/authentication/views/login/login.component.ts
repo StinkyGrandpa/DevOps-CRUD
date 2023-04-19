@@ -25,6 +25,7 @@ export class LoginViewComponent {
     ) {}
 
     submitForm() {
+        this.$error.next(null);
         if (this.loginForm.invalid) return
 
         const input = {

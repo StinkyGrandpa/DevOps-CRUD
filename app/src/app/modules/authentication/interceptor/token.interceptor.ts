@@ -1,5 +1,5 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { Observable, catchError, switchMap, take, throwError } from "rxjs";
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { Observable, switchMap, take } from "rxjs";
 import { AuthenticationService } from "../services/authentication.service";
 import { Injectable } from "@angular/core";
 
@@ -14,13 +14,15 @@ export class TokenHttpInterceptor implements HttpInterceptor {
         return this.service.$token.pipe(
             take(1),
             switchMap((token) => {
-
+                // Check if token is a valid string
                 if(typeof token === "string") {
+                    // If true, set Authorization header
                     request = request.clone({
                         headers: request.headers.set('Authorization', `Bearer ${token}`)
                     });
                 }
 
+                // Execute request
                 return next.handle(request);
             })
         );

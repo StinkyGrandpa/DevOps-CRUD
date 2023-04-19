@@ -91,6 +91,11 @@ export class UserIndexViewComponent {
 
 
     }
+
+    public logout() {
+        this.auth.logout();
+    }
+
     openDocs() {
         window.open('./api/')
     }

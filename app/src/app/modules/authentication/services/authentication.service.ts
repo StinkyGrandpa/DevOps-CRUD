@@ -16,7 +16,7 @@ export const AUTH_COOKIE_EXPIRES = 1; // One day
 })
 export class AuthenticationService {
 
-    private readonly _tokenSubject: BehaviorSubject<string> = new BehaviorSubject(null);
+    private readonly _tokenSubject: BehaviorSubject<string> = new BehaviorSubject(this.readCookieSync());
     public readonly $token = this._tokenSubject.asObservable();
 
     public readonly $user = this.$token.pipe(map((token) => {
@@ -50,11 +50,8 @@ export class AuthenticationService {
         this.router.navigate(["/auth", "login"]);
     }
 
-    public validateToken(token: string) {
-        const params = new URLSearchParams();
-        params.set("token", token);
-
-        return this.httpClient.get<boolean>(`${environment.api_base_url}/auth/validate?${params.toString()}`).pipe(
+    public validateToken(token?: string) {
+        return this.httpClient.get<boolean>(`${environment.api_base_url}/auth/validate`).pipe(
             toFuture(), 
             filter((request) => !request.loading),
             map((request) => {
@@ -66,9 +63,13 @@ export class AuthenticationService {
 
     public getToken() {
         return new Observable<string>((subscriber) => {
-            subscriber.next(Cookies.get(AUTH_COOKIE_NAME));
+            subscriber.next(this.readCookieSync());
             subscriber.complete();
         });
+    }
+
+    private readCookieSync() {
+        return Cookies.get(AUTH_COOKIE_NAME);
     }
 
     public setToken(token?: string) {

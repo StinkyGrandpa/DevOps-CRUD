@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/users/services/users.service';
@@ -15,21 +15,29 @@ export class AuthService {
   ) { }
 
   async login(createAuthDto: CreateAuthDto) {
+    // Find user by username
     const user = await this.userService.findOneByUsername(createAuthDto.username);
-    if (!user) throw new UnauthorizedException('Daten passen nicht!');
+    // Check if user exists, if not throw UNAUTHORIZED
+    if (!user) throw new UnauthorizedException('Bitte gib Benutzername und Passwort ein');
 
+    // Compare password hashes
     if (!bcrypt.compareSync(createAuthDto.password, user.password)) {
-      throw new UnauthorizedException('Daten passen nicht!');
+      throw new UnauthorizedException('Benutzername und Passwort stimmen nicht überein');
     }
-    const { password, ...payload } = user;
-    // TODO: Generate a JWT and return it here
-    // instead of the user object
 
-    const token = this.jwtService.sign(payload, { 
-      secret: 'SuperGeheim', 
-      expiresIn: '1d' 
+    // Remove password from object
+    const payload = {...user};
+    delete payload.password;
+    // Create jwt
+    // const token = this.jwtService.sign(user, { 
+    //   secret: 'SuperGeheim', 
+    //   expiresIn: '1d' 
+    // });
+    const token = await this.jwtService.signAsync(payload).catch((err: Error) => {
+      console.error(err);
+      throw new BadRequestException("Token konnte nicht erzeugt werden")
     });
-
+    // Return as object holding a token value
     return new JWT(token);
   }
 
