@@ -25,7 +25,8 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @ApiBody({ description: 'Gib einen spezifischen Nutzer zurück' })
+  @ApiBody({ description: 'Gib einen spezifischen Nutzer zurück' 
+})
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {

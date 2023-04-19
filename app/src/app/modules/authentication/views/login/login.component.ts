@@ -22,7 +22,7 @@ export class LoginViewComponent {
         private readonly fb: FormBuilder,
         private readonly router: Router,
         private readonly authService: AuthenticationService
-    ) {}
+    ) { }
 
     submitForm() {
         this.$error.next(null);
@@ -36,13 +36,14 @@ export class LoginViewComponent {
         this.authService.login(input.username, input.password).subscribe(x => {
             this.$loggingIn.next(x.loading);
 
-            if(typeof x?.data?.token === "string") {
+            if (typeof x?.data?.token === "string") {
                 this.router.navigate(["/"]);
                 return;
             }
 
-            if(typeof x.error !== "undefined") {
+            if (typeof x.error !== "undefined") {
                 this.$error.next(x.error.message);
+                this.loginForm.reset()
             }
         });
     }

@@ -19,6 +19,7 @@ export class AuthService {
     const user = await this.userService.findOneByUsername(createAuthDto.username);
     // Check if user exists, if not throw UNAUTHORIZED
     if (!user) throw new UnauthorizedException('Bitte gib Benutzername und Passwort ein');
+    if (!user.enabled) throw new UnauthorizedException('Nutzer gesperrt');
 
     // Compare password hashes
     if (!bcrypt.compareSync(createAuthDto.password, user.password)) {
@@ -26,7 +27,7 @@ export class AuthService {
     }
 
     // Remove password from object
-    const payload = {...user};
+    const payload = { ...user };
     delete payload.password;
     // Create jwt
     // const token = this.jwtService.sign(user, { 
