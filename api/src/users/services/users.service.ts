@@ -33,7 +33,10 @@ export class UsersService implements OnApplicationBootstrap {
     if (createUserDto.age <= 0) createUserDto.age = null;
     createUserDto.password = bcrypt.hashSync(createUserDto.password, 12)
 
-    return this.userRepository.save(createUserDto)
+    return this.userRepository.save(createUserDto).then((user) => {
+      delete user.password;
+      return user;
+    })
   }
 
   async findAll() {
@@ -60,14 +63,10 @@ export class UsersService implements OnApplicationBootstrap {
       username: updateUserDto.username,
     }
 
-    return (await this.userRepository.update(id, user)).affected > 0 ? user : false
-    /*
-    return this.userRepository.createQueryBuilder()
-      .update()
-      .set(updateUserDto)
-      .where("id = :id", { id: id })
-      .execute().then(x => { console.log(x) })
-    */
+    const userWithoutPassword = {...user};
+    delete userWithoutPassword.password;
+
+    return (await this.userRepository.update(id, user)).affected > 0 ? userWithoutPassword : false
   }
 
   async remove(id: string) {

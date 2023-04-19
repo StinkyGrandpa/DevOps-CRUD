@@ -2,10 +2,9 @@ import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { Header, Headers, Put, Req, UseGuards } from '@nestjs/common/decorators';
+import { Put, UseGuards } from '@nestjs/common/decorators';
 import { ApiBody } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-
 
 @Controller('users')
 export class UsersController {
@@ -22,7 +21,7 @@ export class UsersController {
   @ApiBody({ description: 'Gib alle Nutzer zurück' })
   @Get()
   @UseGuards(JwtAuthGuard)
-  findAll(@Headers('authorization') re: string) {
+  findAll() {
     return this.usersService.findAll();
   }
 
