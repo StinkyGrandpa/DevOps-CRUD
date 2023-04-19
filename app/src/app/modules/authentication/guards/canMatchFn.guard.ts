@@ -15,6 +15,7 @@ const isAuthenticatedFn: CanMatchFn = (route: Route, url: UrlSegment[]) => {
 
     return service.getToken().pipe(switchMap((token) => {
         if(typeof token === "undefined" || token == null) {
+            console.log("no token found, navigating to login page");
             router.navigate(["/auth", "login"]);
             return of(false);
         }

@@ -4,19 +4,17 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/users/services/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/users/entities/user.entity';
-
-
+import { JWT } from './entities/jwt.entity';
 
 @Injectable()
 export class AuthService {
 
   constructor(
     private readonly userService: UsersService,
-    private jwtService: JwtService
+    private readonly jwtService: JwtService
   ) { }
 
   async login(createAuthDto: CreateAuthDto) {
-
     const user = await this.userService.findOneByUsername(createAuthDto.username);
     if (!user) throw new UnauthorizedException('Daten passen nicht!');
 
@@ -26,9 +24,13 @@ export class AuthService {
     const { password, ...payload } = user;
     // TODO: Generate a JWT and return it here
     // instead of the user object
-    return this.jwtService.sign(payload
-      , { secret: 'SuperGeheim', expiresIn: '1h' });
 
+    const token = this.jwtService.sign(payload, { 
+      secret: 'SuperGeheim', 
+      expiresIn: '1h' 
+    });
+
+    return new JWT(token);
   }
 
   validate() {

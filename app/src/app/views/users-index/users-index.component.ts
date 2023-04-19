@@ -3,11 +3,13 @@ import { MatDialog } from "@angular/material/dialog";
 import { combineLatest, map, Observable, startWith, Subject, switchMap } from "rxjs";
 import { UserEditorDialogComponent } from "src/app/dialogs/user-editor-dialog/user-editor-dialog.component";
 import { User } from "src/app/modules/authentication/entities/user.entity";
+import { AuthenticationService } from "src/app/modules/authentication/services/authentication.service";
 import { UserService } from "src/app/services/user.service";
 
 interface UserIndexProps {
     loading?: boolean;
     users?: User[];
+    user?: User;
 }
 
 @Component({
@@ -16,16 +18,18 @@ interface UserIndexProps {
 })
 export class UserIndexViewComponent {
 
-    public displayedColumns: string[] = ['firstName', 'lastName', 'age', 'actions'];
+    public displayedColumns: string[] = ['username', 'firstName', 'lastName', 'age', 'actions'];
 
     constructor(
         private readonly usersService: UserService,
+        private readonly auth: AuthenticationService,
         private readonly dialog: MatDialog
     ) { }
 
     private readonly $onReload: Subject<void> = new Subject();
 
     public $props: Observable<UserIndexProps> = combineLatest([
+        this.auth.$user,
         this.$onReload.pipe(
             //startwert
             startWith(null),
@@ -35,12 +39,13 @@ export class UserIndexViewComponent {
             })
         )
     ]).pipe(
-        map(([usersRequest]): UserIndexProps => {
+        map(([user, usersRequest]): UserIndexProps => {
             const list: User[] = usersRequest.data ?? [];
 
             return {
                 loading: usersRequest.loading,
-                users: list
+                users: list,
+                user: user
             }
         }),
     );
