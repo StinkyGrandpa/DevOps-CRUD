@@ -3,33 +3,36 @@
         <p class="text-2xl font-semibold text-center">Willkommen!</p>
         <p class="text-center">Bitte melde dich an, um fortzufahren</p>
 
-        <div class="pt-4">
-            <form [formGroup]="loginForm" (ngSubmit)="submitForm()"
-                class="p-2  shadow-md rounded px-8 pt-6 pb-8 mb-4   bg-[#f9fafb] ">
+        <div class="mt-4 p-2 bg-red-400 border border-red-500 rounded-sm" *ngIf="($error | async) as error">
+            <p>{{ error }}</p>
+        </div>
+
+        <div class="mt-4">
+            <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
 
                 <div class="mb-4 standardInput">
-                    <label class="">
+                    <label class="block w-full">
                         Nutzername *
                     </label>
-                    <input type="text" formControlName="username" class="" />
+                    <input type="text" formControlName="username" class="mt-1 w-full outline-none appearance-none p-2 rounded-sm border border-gray-300" />
 
                 </div>
 
                 <div class="mb-6 standardInput">
-                    <label class="">
+                    <label class="block w-full">
                         Passwort *
                     </label>
 
-                    <input type="password" formControlName="password" class="" />
+                    <input type="password" formControlName="password" class="mt-1 w-full outline-none appearance-none p-2 rounded-sm border border-gray-300" />
                 </div>
 
-                <button type="submit" class="">
-                    Einloggen
+                <button type="submit" class="rounded-sm bg-blue-500 hover:bg-blue-600 active:bg-blue-700 w-full text-center px-4 py-2 text-white transition-all [&>p]:active:scale-95" [ngClass]="{'cursor-not-allowed opacity-30': ($loggingIn | async)}">
+                    <p class="text-sm transition-all will-change-transform">Jetzt anmelden</p>
                 </button>
             </form>
         </div>
 
         <div class="pt-4">
-            <p class="text-sm hover:underline cursor-pointer" [routerLink]="['/auth', 'reset']">Passwort vergessen?</p>
+            <span class="text-sm hover:underline cursor-pointer" [routerLink]="['/auth', 'reset']">Passwort vergessen?</span>
         </div>
     </div>
