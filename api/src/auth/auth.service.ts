@@ -27,7 +27,7 @@ export class AuthService {
 
     const token = this.jwtService.sign(payload, { 
       secret: 'SuperGeheim', 
-      expiresIn: '1h' 
+      expiresIn: '1d' 
     });
 
     return new JWT(token);
