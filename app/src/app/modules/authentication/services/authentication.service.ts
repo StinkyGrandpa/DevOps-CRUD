@@ -25,7 +25,7 @@ export class AuthenticationService {
         }
 
         return this.parseJwt(token);
-    }), tap((user) => console.log(user)))
+    }));
 
     constructor(
         private readonly router: Router,
@@ -58,7 +58,6 @@ export class AuthenticationService {
             toFuture(), 
             filter((request) => !request.loading),
             map((request) => {
-                console.log(request);
                 return !request.error;
             }),
             tap((isValid) => this.setToken(isValid ? token : null))
