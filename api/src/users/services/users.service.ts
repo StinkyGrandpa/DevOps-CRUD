@@ -33,8 +33,7 @@ export class UsersService implements OnApplicationBootstrap {
     if (createUserDto.age <= 0) createUserDto.age = null;
     createUserDto.password = bcrypt.hashSync(createUserDto.password, 12)
 
-    this.userRepository.save(createUserDto)
-    return true
+    return this.userRepository.save(createUserDto)
   }
 
   async findAll() {
@@ -52,16 +51,16 @@ export class UsersService implements OnApplicationBootstrap {
   async update(id: string, updateUserDto: UpdateUserDto) {
     if (updateUserDto.age <= 0) updateUserDto.age = null;
 
-    return (await this.userRepository.update(id,
-      {
-        age: updateUserDto.age,
-        firstName: updateUserDto.firstName,
-        lastName: updateUserDto.lastName,
-        enabled: updateUserDto.enabled,
-        password: bcrypt.hashSync(updateUserDto.password, 12),
-        username: updateUserDto.username,
-      }
-    )).affected > 0 ? true : false
+    const user = {
+      age: updateUserDto.age,
+      firstName: updateUserDto.firstName,
+      lastName: updateUserDto.lastName,
+      enabled: updateUserDto.enabled,
+      password: bcrypt.hashSync(updateUserDto.password, 12),
+      username: updateUserDto.username,
+    }
+
+    return (await this.userRepository.update(id, user)).affected > 0 ? user : false
     /*
     return this.userRepository.createQueryBuilder()
       .update()

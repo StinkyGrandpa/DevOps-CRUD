@@ -4,6 +4,22 @@
   <form class="w-min">
     <!-- First name -->
     <mat-form-field class="w-96">
+      <mat-label>Benutzername</mat-label>
+      <input type="text" matInput [formControl]="usernameControl">
+      <mat-error *ngIf="usernameControl.hasError('required')">
+        Benutzername wird <strong>benötigt</strong>
+      </mat-error>
+    </mat-form-field>
+    <!-- First name -->
+    <mat-form-field class="w-96">
+      <mat-label>Passwort</mat-label>
+      <input type="password" matInput [formControl]="passwordControl">
+      <mat-error *ngIf="passwordControl.hasError('required')">
+        Passwort wird <strong>benötigt</strong>
+      </mat-error>
+    </mat-form-field>
+    <!-- First name -->
+    <mat-form-field class="w-96">
       <mat-label>Vorname</mat-label>
       <input type="text" matInput [formControl]="firstNameControl">
       <mat-error *ngIf="firstNameControl.hasError('required')">

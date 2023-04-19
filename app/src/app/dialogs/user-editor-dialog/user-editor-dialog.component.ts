@@ -11,6 +11,8 @@ export class UserEditorDialogComponent {
 
     public readonly firstNameControl = new FormControl('', [Validators.required, Validators.minLength(0), Validators.maxLength(254)]);
     public readonly lastNameControl = new FormControl('', [Validators.required, Validators.minLength(0), Validators.maxLength(254)]);
+    public readonly usernameControl = new FormControl('', [Validators.required, Validators.minLength(0), Validators.maxLength(254)]);
+    public readonly passwordControl = new FormControl('', [Validators.required, Validators.minLength(0), Validators.maxLength(254)]);
     public readonly ageControl = new FormControl<number | null>(null, [Validators.min(0)]);
 
     constructor(
@@ -20,6 +22,7 @@ export class UserEditorDialogComponent {
     ) {
         if (data) {
             this.firstNameControl.setValue(data.firstName);
+            this.usernameControl.setValue(data.username);
             this.lastNameControl.setValue(data.lastName);
             this.ageControl.setValue(data.age as number);
         }
@@ -33,13 +36,13 @@ export class UserEditorDialogComponent {
     }
 
     public createUser() {
-
-
         if (this.firstNameControl.invalid || this.lastNameControl.invalid || this.ageControl.invalid) return;
 
         const data: Omit<User, "id" | "enabled"> = {
             firstName: this.firstNameControl.value as string,
             lastName: this.lastNameControl.value as string,
+            username: this.usernameControl.value as string,
+            password: this.passwordControl.value as string,
             age: Number(this.ageControl.value)
         }
 
@@ -55,8 +58,11 @@ export class UserEditorDialogComponent {
         const data: Omit<User, "id" | "enabled"> = {
             firstName: this.firstNameControl.value as string,
             lastName: this.lastNameControl.value as string,
+            username: this.usernameControl.value as string,
+            password: this.passwordControl.value as string,
             age: Number(this.ageControl.value)
         }
+        
         this.usersService.updateUser(this.data.id, data).subscribe((request) => {
             if (request.loading) return;
             if (request.error) return;
